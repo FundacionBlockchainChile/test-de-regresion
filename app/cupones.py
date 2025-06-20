@@ -18,7 +18,11 @@ class Cupon:
         Valida si el cupón puede ser aplicado al monto dado.
         Retorna una tupla (es_valido, mensaje)
         """
-        if datetime.now() > self.fecha_expiracion:
+        # Corregimos la validación de fecha para considerar todo el día de expiración
+        fecha_actual = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+        fecha_exp = self.fecha_expiracion.replace(hour=23, minute=59, second=59)
+        
+        if fecha_actual > fecha_exp:
             return False, "Cupón expirado"
         
         if monto < self.min_compra:
